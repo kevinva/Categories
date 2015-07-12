@@ -10,6 +10,6 @@
 
 @interface NSObject (Nametags)
 
-@property (nonatomic, strong) NSString *nametag;
+@property (nonatomic, strong) NSString *hz_nametag;
 
 @end

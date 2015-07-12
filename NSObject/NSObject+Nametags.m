@@ -11,12 +11,12 @@
 
 @implementation NSObject (Nametags)
 
-- (NSString *)nametag {
-    return objc_getAssociatedObject(self, @selector(nametag));
+- (NSString *)hz_nametag {
+    return objc_getAssociatedObject(self, @selector(hz_nametag));
 }
 
-- (void)setNametag:(NSString *)nametag {
-    objc_setAssociatedObject(self, @selector(nametag), nametag, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setHz_Nametag:(NSString *)nametag {
+    objc_setAssociatedObject(self, @selector(hz_nametag), nametag, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 

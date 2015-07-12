@@ -10,7 +10,7 @@
 
 @implementation NSDictionary (NullReplacement)
 
-- (NSDictionary *)dictionaryByReplaceNullWithBlankString{
+- (NSDictionary *)hz_dictionaryByReplaceNullWithBlankString{
     const id nullObj = [NSNull null];
     const NSString *blankString = @"";
     NSMutableDictionary *mutableSelf = [self mutableCopy];

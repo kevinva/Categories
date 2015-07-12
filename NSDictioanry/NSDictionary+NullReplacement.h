@@ -10,6 +10,6 @@
 
 @interface NSDictionary (NullReplacement)
 
-- (NSDictionary *)dictionaryByReplaceNullWithBlankString;
+- (NSDictionary *)hz_dictionaryByReplaceNullWithBlankString;
 
 @end
