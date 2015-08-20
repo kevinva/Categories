@@ -10,10 +10,10 @@
 
 @implementation NSTimer (HZBlockSupport)
 
-+ (NSTimer *)hz_scheduledTimerWithTimeInterval:(NSTimeInterval)interval block:(void (^)())block repeats:(BOOL)repeats {
++ (NSTimer *)hz_scheduledTimerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)())block {
     return [self scheduledTimerWithTimeInterval:interval
                                          target:self
-                                       selector:@selector(eoc_blockInvoke:)
+                                       selector:@selector(hz_blockInvoke:)
                                        userInfo:[block copy]
                                         repeats:repeats];
 }
@@ -21,7 +21,7 @@
 
 #pragma mark - Private methods
 
-+ (void)eoc_blockInvoke:(NSTimer *)timer {
++ (void)hz_blockInvoke:(NSTimer *)timer {
     void (^block)() = timer.userInfo;
     if (block) {
         block();

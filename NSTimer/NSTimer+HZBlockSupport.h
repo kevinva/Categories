@@ -10,6 +10,6 @@
 
 @interface NSTimer (HZBlockSupport)
 
-+ (NSTimer *)hz_scheduledTimerWithTimeInterval:(NSTimeInterval)interval block:(void(^)())block repeats:(BOOL)repeats;
++ (NSTimer *)hz_scheduledTimerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void(^)())block;
 
 @end
