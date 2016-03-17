@@ -19,6 +19,20 @@
         if(obj == nullObj){
             [mutableSelf setObject:blankString forKey:key];
         }
+        else if ([obj isKindOfClass:[NSArray class]]) {
+            NSArray *list = (NSArray *)obj;
+            NSMutableArray *mutableList = [NSMutableArray arrayWithCapacity:list.count];
+            for (id listItem in list) {
+                if ([listItem isKindOfClass:[NSDictionary class]]) {
+                    [mutableList addObject:[(NSDictionary *)listItem hz_dictionaryByReplaceNullWithBlankString]];
+                }
+            }
+            [mutableSelf setObject:mutableList forKey:key];
+        }
+        else if ([obj isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict = (NSDictionary *)obj;
+            [mutableSelf setObject:[dict hz_dictionaryByReplaceNullWithBlankString] forKey:key];
+        }
         
     }];
     
