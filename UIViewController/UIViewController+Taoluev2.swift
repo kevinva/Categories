@@ -42,52 +42,56 @@ extension UIViewController {
     }
     
     func lt_showHUDWithText(text: NSString, duration: Double) {
-        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(16.0)]
-        let rect = text.boundingRectWithSize(CGSize(width: 200.0, height: 21.0), options: .UsesLineFragmentOrigin, attributes: attributes, context: nil)
-        
-        let width = CGRectGetWidth(rect) + 30.0
-        let height = CGRectGetHeight(rect) + 30.0
         let bgView: UIView = {
            
-            let bgView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
+            let bgView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 320.0, height: 568.0))
             bgView.backgroundColor = UIColor.clearColor()
             bgView.translatesAutoresizingMaskIntoConstraints = false
             bgView.alpha = 0.0
-            bgView.layer.cornerRadius = 4.0
-            bgView.layer.masksToBounds = true
-            
-            let widthConstraint = NSLayoutConstraint(item: bgView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
-            let heightConstraint = NSLayoutConstraint(item: bgView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
-            NSLayoutConstraint.activateConstraints([widthConstraint, heightConstraint])
             
             return bgView
             
         }()
         
-        UIApplication.sharedApplication().keyWindow!.addSubview(bgView)
+        let window = UIApplication.sharedApplication().keyWindow
+        window!.addSubview(bgView)
     
-        let centerX = NSLayoutConstraint(item: bgView, attribute: .CenterX, relatedBy: .Equal, toItem: self.view, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
-        let centerY = NSLayoutConstraint(item: bgView, attribute: .CenterY, relatedBy: .Equal, toItem: self.view, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        NSLayoutConstraint.activateConstraints([centerX, centerY])
+        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: window, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: window, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: window, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: window, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+        NSLayoutConstraint.activateConstraints([top, leading, bottom, trailing])
+        
         
         //
+        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(16.0)]
+        let rect = text.boundingRectWithSize(CGSize(width: 200.0, height: 21.0), options: .UsesLineFragmentOrigin, attributes: attributes, context: nil)
+        
+        let width = CGRectGetWidth(rect) + 30.0
+        let height = CGRectGetHeight(rect) + 30.0
+        
         let transparentView: UIView = {
             
-            let transparentView = UIView(frame: bgView.bounds)
+            let transparentView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
             transparentView.backgroundColor = UIColor.blackColor()
             transparentView.alpha = 0.7
             transparentView.translatesAutoresizingMaskIntoConstraints = false
+            transparentView.layer.cornerRadius = 5.0
+            transparentView.layer.masksToBounds = true
+            
+            let widthConstraint = NSLayoutConstraint(item: transparentView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
+            let heightConstraint = NSLayoutConstraint(item: transparentView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
+            NSLayoutConstraint.activateConstraints([widthConstraint, heightConstraint])
             
             return transparentView
             
         }()
         bgView.addSubview(transparentView)
         
-        let top = NSLayoutConstraint(item: transparentView, attribute: .Top, relatedBy: .Equal, toItem: bgView, attribute: .Top, multiplier: 1.0, constant: 0.0)
-        let leading = NSLayoutConstraint(item: transparentView, attribute: .Leading, relatedBy: .Equal, toItem: bgView, attribute: .Leading, multiplier: 1.0, constant: 0.0)
-        let bottom = NSLayoutConstraint(item: transparentView, attribute: .Bottom, relatedBy: .Equal, toItem: bgView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let trailing = NSLayoutConstraint(item: transparentView, attribute: .Trailing, relatedBy: .Equal, toItem: bgView, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
-        NSLayoutConstraint.activateConstraints([top, leading, bottom, trailing])
+        let centerX = NSLayoutConstraint(item: transparentView, attribute: .CenterX, relatedBy: .Equal, toItem: bgView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let centerY = NSLayoutConstraint(item: transparentView, attribute: .CenterY, relatedBy: .Equal, toItem: bgView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        NSLayoutConstraint.activateConstraints([centerX, centerY])
+        
         
         //
         let label: UILabel = {
