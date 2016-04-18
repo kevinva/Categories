@@ -135,6 +135,78 @@ extension UIViewController {
                 })
                 
         }
+    }
+    
+    func lt_showLoadingHUD() -> UIView {
+        let bgView: UIView = {
+            
+            let bgView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 320.0, height: 568.0))
+            bgView.backgroundColor = UIColor.clearColor()
+            bgView.translatesAutoresizingMaskIntoConstraints = false
+            bgView.alpha = 0.0
+            
+            return bgView
+            
+        }()
         
+        let window = UIApplication.sharedApplication().keyWindow
+        window!.addSubview(bgView)
+        
+        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: window, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: window, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: window, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: window, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+        NSLayoutConstraint.activateConstraints([top, leading, bottom, trailing])
+        
+        
+        //
+        let width: CGFloat = 60.0
+        let height: CGFloat = 60.0
+        let transparentView: UIView = {
+            
+            let transparentView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
+            transparentView.backgroundColor = UIColor.blackColor()
+            transparentView.alpha = 0.7
+            transparentView.translatesAutoresizingMaskIntoConstraints = false
+            transparentView.layer.cornerRadius = 5.0
+            transparentView.layer.masksToBounds = true
+            
+            let widthConstraint = NSLayoutConstraint(item: transparentView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
+            let heightConstraint = NSLayoutConstraint(item: transparentView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
+            NSLayoutConstraint.activateConstraints([widthConstraint, heightConstraint])
+            
+            return transparentView
+            
+        }()
+        bgView.addSubview(transparentView)
+        
+        let centerX = NSLayoutConstraint(item: transparentView, attribute: .CenterX, relatedBy: .Equal, toItem: bgView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let centerY = NSLayoutConstraint(item: transparentView, attribute: .CenterY, relatedBy: .Equal, toItem: bgView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        NSLayoutConstraint.activateConstraints([centerX, centerY])
+        
+        
+        //
+        let indicator: UIActivityIndicatorView = {
+           
+            let indicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+            indicator.translatesAutoresizingMaskIntoConstraints = false
+            indicator.startAnimating()
+            return indicator
+            
+        }()
+        bgView.addSubview(indicator)
+        
+        let indicatorCenterX = NSLayoutConstraint(item: indicator, attribute: .CenterX, relatedBy: .Equal, toItem: bgView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let indicatorCenterY = NSLayoutConstraint(item: indicator, attribute: .CenterY, relatedBy: .Equal, toItem: bgView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
+        NSLayoutConstraint.activateConstraints([indicatorCenterX, indicatorCenterY])
+        
+        //
+        UIView.animateWithDuration(0.3) { 
+            
+            bgView.alpha = 1.0
+            
+        }
+        
+        return bgView
     }
 }
