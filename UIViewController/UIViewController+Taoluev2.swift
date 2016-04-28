@@ -23,25 +23,17 @@ extension UIViewController {
     
     func lt_navSpaceItem() -> UIBarButtonItem {
         let spaceItem = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
-        let width: CGFloat = Ruler.iPhoneHorizontal(-16.0, -20.0, -22.0).value
+        let width: CGFloat = Ruler.iPhoneHorizontal(-16.0, -18.0, -21.0).value
         spaceItem.width = width
         return spaceItem
     }
     
     
-    func lt_delayOnMainQueueWithSeconds(seconds: Double, task: (() -> ())?) {
-        let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * seconds))
-        
-        dispatch_after(popTime, dispatch_get_main_queue()) {
-            
-            if let completion = task {
-                completion()
-            }
-            
+    func lt_showHUDWithText(text: String?, duration: Double) {
+        guard let messageText = text else {
+            return
         }
-    }
-    
-    func lt_showHUDWithText(text: NSString, duration: Double) {
+        
         let bgView: UIView = {
            
             let bgView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 320.0, height: 568.0))
@@ -53,19 +45,18 @@ extension UIViewController {
             
         }()
         
-        let window = UIApplication.sharedApplication().keyWindow
-        window!.addSubview(bgView)
+        self.view.addSubview(bgView)
     
-        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: window, attribute: .Top, multiplier: 1.0, constant: 0.0)
-        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: window, attribute: .Leading, multiplier: 1.0, constant: 0.0)
-        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: window, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: window, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: self.view, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
         NSLayoutConstraint.activateConstraints([top, leading, bottom, trailing])
         
         
         //
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(16.0)]
-        let rect = text.boundingRectWithSize(CGSize(width: 200.0, height: 21.0), options: .UsesLineFragmentOrigin, attributes: attributes, context: nil)
+        let rect = messageText.boundingRectWithSize(CGSize(width: 300.0, height: 21.0), options: .UsesLineFragmentOrigin, attributes: attributes, context: nil)
         
         let width = CGRectGetWidth(rect) + 30.0
         let height = CGRectGetHeight(rect) + 30.0
@@ -100,9 +91,9 @@ extension UIViewController {
             label.translatesAutoresizingMaskIntoConstraints = false
             label.backgroundColor = UIColor.clearColor()
             label.textAlignment = .Center
-            label.font = UIFont.systemFontOfSize(16.0)
+            label.font = UIFont.systemFontOfSize(15.0)
             label.textColor = UIColor.whiteColor()
-            label.text = text as String
+            label.text = messageText
             return label
             
         }()
@@ -111,7 +102,9 @@ extension UIViewController {
         
         let labelCenterX = NSLayoutConstraint(item: label, attribute: .CenterX, relatedBy: .Equal, toItem: bgView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
         let labelCenterY = NSLayoutConstraint(item: label, attribute: .CenterY, relatedBy: .Equal, toItem: bgView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
-        NSLayoutConstraint.activateConstraints([labelCenterX, labelCenterY])
+        let labelLeading = NSLayoutConstraint(item: label, attribute: .Leading, relatedBy: .GreaterThanOrEqual, toItem: transparentView, attribute: .Leading, multiplier: 1.0, constant: 10.0)
+        let labelTrailing = NSLayoutConstraint(item: label, attribute: .Trailing, relatedBy: .GreaterThanOrEqual, toItem: transparentView, attribute: .Trailing, multiplier: 1.0, constant: -10.0)
+        NSLayoutConstraint.activateConstraints([labelCenterX, labelCenterY, labelLeading, labelTrailing])
         
         //
         UIView.animateWithDuration(0.3, animations: { 
@@ -149,13 +142,12 @@ extension UIViewController {
             
         }()
         
-        let window = UIApplication.sharedApplication().keyWindow
-        window!.addSubview(bgView)
+        self.view.addSubview(bgView)
         
-        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: window, attribute: .Top, multiplier: 1.0, constant: 0.0)
-        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: window, attribute: .Leading, multiplier: 1.0, constant: 0.0)
-        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: window, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: window, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: self.view, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
         NSLayoutConstraint.activateConstraints([top, leading, bottom, trailing])
         
         
