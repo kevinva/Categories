@@ -45,12 +45,17 @@ extension UIViewController {
             
         }()
         
-        self.view.addSubview(bgView)
+        var parentView = self.view
+        if self.view is UITableView { //在UITableView上不能加约束布局
+            parentView = UIApplication.sharedApplication().keyWindow
+        }
+        
+        parentView.addSubview(bgView)
     
-        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1.0, constant: 0.0)
-        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0.0)
-        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: self.view, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: parentView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: parentView, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: parentView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: parentView, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
         NSLayoutConstraint.activateConstraints([top, leading, bottom, trailing])
         
         
@@ -142,12 +147,17 @@ extension UIViewController {
             
         }()
         
-        self.view.addSubview(bgView)
+        var parentView = self.view
+        if self.view is UITableView { //在UITableView上不能加约束布局
+            parentView = UIApplication.sharedApplication().keyWindow
+        }
         
-        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1.0, constant: 0.0)
-        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0.0)
-        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: self.view, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+        parentView.addSubview(bgView)
+        
+        let top = NSLayoutConstraint(item: bgView, attribute: .Top, relatedBy: .Equal, toItem: parentView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let leading = NSLayoutConstraint(item: bgView, attribute: .Leading, relatedBy: .Equal, toItem: parentView, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+        let bottom = NSLayoutConstraint(item: bgView, attribute: .Bottom, relatedBy: .Equal, toItem: parentView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let trailing = NSLayoutConstraint(item: bgView, attribute: .Trailing, relatedBy: .Equal, toItem: parentView, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
         NSLayoutConstraint.activateConstraints([top, leading, bottom, trailing])
         
         
@@ -191,6 +201,8 @@ extension UIViewController {
         let indicatorCenterX = NSLayoutConstraint(item: indicator, attribute: .CenterX, relatedBy: .Equal, toItem: bgView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
         let indicatorCenterY = NSLayoutConstraint(item: indicator, attribute: .CenterY, relatedBy: .Equal, toItem: bgView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)
         NSLayoutConstraint.activateConstraints([indicatorCenterX, indicatorCenterY])
+        
+        self.view.layoutIfNeeded()
         
         //
         UIView.animateWithDuration(0.3) { 
